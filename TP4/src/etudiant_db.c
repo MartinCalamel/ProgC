@@ -17,23 +17,25 @@ int main(){
 		float tempf;
 		
 		printf("Nom : ");
-		scanf("%s", temps);
+		fgets(temps, 100, stdin);
 		strcpy(tab[i].nom, temps);
 		
 		printf("Prénom : ");
-		scanf("%s", temps);
+		fgets(temps, 100, stdin);
 		strcpy(tab[i].prenom, temps);
 
 		printf("adresse : ");
-		scanf("%s", temps);
+		fgets(temps, 100, stdin);
 		strcpy(tab[i].address, temps);
 
 		printf("Note 1 : ");
 		scanf("%f", &tempf);
+		while(getchar() != '\n');
 		tab[i].note[1] = tempf;
 		
 		printf("Note 2 : ");
 		scanf("%f", &tempf);
+		while(getchar() != '\n');
 		tab[i].note[2] = tempf;
 	}	
 	
