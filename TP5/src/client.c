@@ -15,6 +15,43 @@
 
 #include "client.h"
 
+
+int envoie_operateur_numeros(int socketfd){
+	char message[1000];
+	char data[1000];
+
+	printf("entrez votre calcule : \n>>> ");
+	fgets(message, 1000, stdin);
+	
+	strcpy(data, "calcule : ");
+	strcat(data, message);
+	
+	// Envoie le message au client
+  	int write_status = write(socketfd, data, strlen(data));
+  	if (write_status < 0)
+  	{
+    		perror("Erreur d'écriture");
+		return -1;
+	}
+
+	// Réinitialisation de l'ensemble des données
+	memset(data, 0, sizeof(data));
+
+	// Lit les données de la socket
+	int read_status = read(socketfd, data, sizeof(data));
+	if (read_status < 0)
+	{
+		perror("Erreur de lecture");
+	   	return -1;
+	}
+
+	// Affiche le message reçu du client
+	printf("Calcule : %s\n", data);
+
+	return 0; // Succès
+}
+
+
 /**
  * Fonction pour envoyer et recevoir un message depuis un client connecté à la socket.
  *
@@ -94,8 +131,17 @@ int main()
 
   while (1)
   {
-    // appeler la fonction pour envoyer un message au serveur
-    envoie_recois_message(socketfd);
+    // faire le choix (calcule ou message)
+    short choix;
+    printf("faire un choix : \n  [0] envoyer un message\n  [1] envoyer un calcule\n> ");
+    scanf("%hd", &choix);
+    while(getchar() != '\n');
+    if (!choix){ 
+      // appeler la fonction pour envoyer un message au serveur
+      envoie_recois_message(socketfd);
+    } else {
+      envoie_operateur_numeros(socketfd);
+    } 
   }
 
   close(socketfd);
