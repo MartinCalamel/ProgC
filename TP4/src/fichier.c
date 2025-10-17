@@ -22,4 +22,5 @@ void ecrire_dans_fichier(char*nom, char*texte ){
 	 FILE *fichier = fopen(nom, "w");
 	 fprintf(fichier, "%s", texte);
 	 fclose(fichier);
+
 }
