@@ -55,12 +55,49 @@ int recois_envoie_message(int client_socket_fd, char *data)
   {
     if (strcmp(code, "message:") == 0)
     {
-      return renvoie_message(client_socket_fd, data);
+      char new_data[1000];
+      printf("Message à envoyer ?\n>>> ");
+      fgets(new_data, 1000, stdin);
+
+      return renvoie_message(client_socket_fd, new_data);
     }
   }
 
   return (EXIT_SUCCESS);
 }
+
+int recois_numeros_calcule( int client_socket_fd, char *data)
+{
+	int a;
+	int b;
+	char op;
+	int result;
+	char new_data[1000];
+	printf("Calcule reçu: %s\n", data);
+	// utilisation de sscanf pour parser le calcule
+	if (sscanf(data, "calcule : %c %i %i:", &op, &a, &b) == 3)
+	{
+		switch (op)
+		{
+			case '+':
+				result = a + b;
+				break;
+			case '-':
+				result = a - b;
+				break;
+			case '/':
+				result = a / b;
+				break;
+			case '*':
+				result = a * b;
+		}
+		// uitlisation de sscanf pour renvoyer le calcule
+		sprintf(new_data, "%d", result);
+		return renvoie_message(client_socket_fd, new_data);
+	}
+	return (EXIT_SUCCESS);
+}
+
 
 /**
  * Gestionnaire de signal pour Ctrl+C (SIGINT).
@@ -113,8 +150,13 @@ void gerer_client(int client_socket_fd)
       close(client_socket_fd);
       break; // Sortir de la boucle de communication avec ce client
     }
-
-    recois_envoie_message(client_socket_fd, data);
+    char code[1000];
+    printf("data reçu %s", data);
+    if (sscanf(data, "message:%s", code) == 1){
+      recois_envoie_message(client_socket_fd, data);
+    } else if (sscanf(data, "calcule : %s", code) == 1){
+      recois_numeros_calcule(client_socket_fd, data);
+    }
   }
 }
 
