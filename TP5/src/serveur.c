@@ -151,6 +151,7 @@ void gerer_client(int client_socket_fd)
       break; // Sortir de la boucle de communication avec ce client
     }
     char code[1000];
+    printf("data reçu %s", data);
     if (sscanf(data, "message:%s", code) == 1){
       recois_envoie_message(client_socket_fd, data);
     } else if (sscanf(data, "calcule : %s", code) == 1){

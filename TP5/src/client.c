@@ -15,6 +15,70 @@
 
 #include "client.h"
 
+int get_note(char *file_name){
+	int note = 0;
+	FILE *fd = fopen(file_name, "r");
+	fscanf(fd, "%d", &note);
+	fclose(fd);
+	return note;
+}
+
+int envoie_notes(int socketfd){
+	int etud;
+	
+	printf("Etudiant dont vous voulez calculer la moyenne [1-5] :\n> ");
+	scanf("%d", &etud);
+	int somme = 0;
+	for (int i = 1; i<6; i++){
+		char path [1000] = "../etudiant/";
+		char data[1000];
+		sprintf(path, "%s%i/note%i.txt", path, etud, i);
+		
+		int note = get_note(path);
+		char message[1000];
+		sprintf(message, "calcule : + %i %i\n", somme, note);
+		// Envoie le message au client
+		int write_status = write(socketfd, message, strlen(message));
+		if (write_status < 0)
+		{
+			perror("Erreur d'écriture");
+			return -1;
+		}
+		// Réinitialisation de l'ensemble des données
+		memset(data, 0, sizeof(data));
+
+		// Lit les données de la socket
+		int read_status = read(socketfd, data, sizeof(data));
+		if (read_status < 0)
+		{
+			perror("Erreur de lecture");
+			return -1;
+		}
+		sscanf(data, "%i", &somme);
+	}
+	char message[1000];
+	char data[1000];	
+	sprintf(message, "calcule : / %i 5", somme);
+	int write_status = write(socketfd, message, strlen(message));
+	if (write_status < 0)
+        {
+        	perror("Erreur d'écriture");
+                return -1;
+        }
+        // Réinitialisation de l'ensemble des données
+        memset(data, 0, sizeof(data));
+
+        // Lit les données de la socket
+        int read_status = read(socketfd, data, sizeof(data));
+        if (read_status < 0)
+        {
+        	perror("Erreur de lecture");
+                return -1;
+        }
+        sscanf(data, "%i", &somme);
+	printf("moyenne de l'etudiant %i : %i\n", etud, somme); 
+}
+
 
 int envoie_operateur_numeros(int socketfd){
 	char message[1000];
@@ -133,15 +197,17 @@ int main()
   {
     // faire le choix (calcule ou message)
     short choix;
-    printf("faire un choix : \n  [0] envoyer un message\n  [1] envoyer un calcule\n> ");
+    printf("faire un choix : \n  [0] envoyer un message\n  [1] envoyer un calcule\n  [2] envoyer des notes\n> ");
     scanf("%hd", &choix);
     while(getchar() != '\n');
     if (!choix){ 
       // appeler la fonction pour envoyer un message au serveur
       envoie_recois_message(socketfd);
-    } else {
+    } else if (!(choix - 1)){
       envoie_operateur_numeros(socketfd);
-    } 
+    } else {
+      envoie_notes(socketfd);
+    }
   }
 
   close(socketfd);
