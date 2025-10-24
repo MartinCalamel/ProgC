@@ -48,9 +48,18 @@ int plot(char *data)
 {
   int i;
   char *saveptr = NULL;
+  int num_colors;
+  char temp_str[1024];
+
+  // on peut maintenant changer le nombre si le message a
+  // la structure {nb data} avec nb le nombre de couleurs à analyser
+  // et data le message d'avant
+
+  sscanf(data, "couleurs: %d,%s", &num_colors, temp_str);
+  printf("%d\n", num_colors);
   char *str = data;
+
   char *token = strtok_r(str, ",", &saveptr);
-  const int num_colors = 10;
 
   double angles[num_colors];
   memset(angles, 0, sizeof(angles));
