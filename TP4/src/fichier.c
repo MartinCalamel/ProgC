@@ -1,21 +1,26 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "fichier.h"
-void lire_fichier(char * nom_de_fichier){
-	printf("Lecture du fichier %s\n", nom_de_fichier);
-	char temp[10000];
-	FILE *fp = fopen(nom_de_fichier, "r");
-	fread(temp, 10000, 1000, fp);
-	fclose(fp);
-	printf("%s", temp);
-	printf("Lecture OK\n");
+
+void lire_fichier (char * nom){
+	FILE *f=fopen(nom,"r");
+	fseek(f, 0, SEEK_END);
+	long taille = ftell(f);
+	rewind(f);
+
+	char *buffer = malloc(taille + 1);
+	size_t lus = fread(buffer, 1, taille, f);
+	buffer[lus] = '\0';
+
+	printf("Contenu du fichier :\n%s\n", buffer);
+
+	free(buffer);
+	fclose(f);
 }
 
-void ecrire_dans_fichier(char * nom_de_fichier, char * message){
-	int taille=0;
-	while(message[taille]!='\0'){taille++;}
-	printf("Ecriture dans le fichier : %s\n", nom_de_fichier);
-	FILE *fp = fopen(nom_de_fichier, "w");
-	fwrite(message, taille, 1, fp);
-	printf("Ecriture OK\n");
-	fclose(fp);	
+void ecrire_dans_fichier(char*nom, char*texte ){
+	 FILE *fichier = fopen(nom, "w");
+	 fprintf(fichier, "%s", texte);
+	 fclose(fichier);
+
 }
