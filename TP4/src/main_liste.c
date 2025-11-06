@@ -1,7 +1,12 @@
+/* main_liste.c
+* Auteur : Martin
+*/
+
 #include <stdio.h>
 #include "liste.h"
 
 int main(){
+	// teste la structure de donnée de liste simplement chainée
 	struct color premier;
 	premier.next= NULL;
 	premier.rouge = 'a';
