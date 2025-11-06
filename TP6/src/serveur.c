@@ -55,7 +55,7 @@ int plot(char *data)
   // la structure {nb data} avec nb le nombre de couleurs à analyser
   // et data le message d'avant
 
-  sscanf(data, "couleurs: %d,%s", &num_colors, temp_str);
+  sscanf(data, "couleurs: %d,%s", &num_colors, temp_str); // on tien compte du nombre de couleurs
   printf("%d\n", num_colors);
   char *str = data;
 
