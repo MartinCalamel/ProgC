@@ -16,6 +16,7 @@
 #include "client.h"
 
 int get_note(char *file_name){
+	// lit le fichier de notes et retourne la note
 	int note = 0;
 	FILE *fd = fopen(file_name, "r");
 	fscanf(fd, "%d", &note);
@@ -30,6 +31,7 @@ int envoie_notes(int socketfd){
 	scanf("%d", &etud);
 	int somme = 0;
 	for (int i = 1; i<6; i++){
+		// on envoie les notes une par une au serveur avec pour instruction de l'ajouter à somme.
 		char path [1000] = "../etudiant/";
 		char data[1000];
 		sprintf(path, "%s%i/note%i.txt", path, etud, i);
@@ -56,6 +58,7 @@ int envoie_notes(int socketfd){
 		}
 		sscanf(data, "%i", &somme);
 	}
+	// on divise le total par 5
 	char message[1000];
 	char data[1000];	
 	sprintf(message, "calcule : / %i 5", somme);
@@ -76,11 +79,13 @@ int envoie_notes(int socketfd){
                 return -1;
         }
         sscanf(data, "%i", &somme);
+	// affichage du total
 	printf("moyenne de l'etudiant %i : %i\n", etud, somme); 
 }
 
 
 int envoie_operateur_numeros(int socketfd){
+	// envoie d'un calcule simple
 	char message[1000];
 	char data[1000];
 
