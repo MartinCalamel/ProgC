@@ -1,7 +1,12 @@
+/* liste.c
+* Auteur : Martin
+*/
+
 #include <stdio.h>
 #include "liste.h"
 
 void insertion(struct color *premier, struct color *couleur){
+	// insertion au premier élément
 	struct color* next = premier->next;
 	couleur->next = next;
 	premier->next = couleur;
@@ -9,6 +14,7 @@ void insertion(struct color *premier, struct color *couleur){
 
 
 void parcours(struct color *premier){
+	// affichage de tous les éléments grace au paramètre next
 	struct color *elem = premier;
 	int i = 0;
 	while(elem != NULL){
