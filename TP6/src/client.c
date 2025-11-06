@@ -58,22 +58,23 @@ int envoie_recois_message(int socketfd)
   return 0;
 }
 
-void analyse(char *pathname, char *data)
+void analyse(char *pathname, char *data, int nb_couleur)
 {
   // compte de couleurs
   couleur_compteur *cc = analyse_bmp_image(pathname);
 
   int count;
   strcpy(data, "couleurs: ");
-  char temp_string[10] = "10,";
-  if (cc->size < 10)
+  char temp_string[10];
+  sprintf(temp_string, "%d,", nb_couleur);
+  if (cc->size < nb_couleur)
   {
     sprintf(temp_string, "%d,", cc->size);
   }
   strcat(data, temp_string);
 
   // choisir 10 couleurs
-  for (count = 1; count < 11 && cc->size - count > 0; count++)
+  for (count = 1; count < nb_couleur + 1 && cc->size - count > 0; count++)
   {
     if (cc->compte_bit == BITS32)
     {
@@ -90,12 +91,16 @@ void analyse(char *pathname, char *data)
   data[strlen(data) - 1] = '\0';
 }
 
-int envoie_couleurs(int socketfd, char *pathname)
+int envoie_couleurs(int socketfd, char *pathname, char *nb_string)
 {
+  int nb_couleurs;
+  sscanf(nb_string, "%i", &nb_couleurs);
+
   char data[1024];
   memset(data, 0, sizeof(data));
-  analyse(pathname, data);
-
+  analyse(pathname, data, nb_couleurs);
+  
+  printf("\n%s\n", data);  
   int write_status = write(socketfd, data, strlen(data));
   if (write_status < 0)
   {
@@ -112,9 +117,9 @@ int main(int argc, char **argv)
 
   struct sockaddr_in server_addr;
 
-  if (argc < 2)
+  if (argc < 3)
   {
-    printf("usage: ./client chemin_bmp_image\n");
+    printf("usage: ./client chemin_bmp_image nb_couleurs\n");
     return (EXIT_FAILURE);
   }
 
@@ -141,7 +146,7 @@ int main(int argc, char **argv)
     perror("connection serveur");
     exit(EXIT_FAILURE);
   }
-  if (argc != 2)
+  if (argc != 3)
   {
     // envoyer et recevoir un message
     envoie_recois_message(socketfd);
@@ -150,7 +155,8 @@ int main(int argc, char **argv)
   {
     // envoyer et recevoir les couleurs prédominantes
     // d'une image au format BMP (argv[1])
-    envoie_couleurs(socketfd, argv[1]);
+    // et du nombre de couleurs voulue
+    envoie_couleurs(socketfd, argv[1], argv[2]);
   }
 
   close(socketfd);
