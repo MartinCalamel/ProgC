@@ -1,3 +1,8 @@
+/* operator.c
+* Auteur : Armand
+*/
+
+// definition des fonction de calcules
 int somme (int a, int b){
 	return a+b;
 }
