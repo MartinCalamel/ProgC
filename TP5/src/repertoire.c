@@ -1,3 +1,7 @@
+/* repertoire.c
+* Auteur : Armand
+*/
+
 #include "repertoire.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,8 +18,8 @@ void lire_dossier_recursif(const char *nom_repertoire) {
     }
 
     struct dirent *ent;
-    while ((ent = readdir(dirp)) != NULL) {
-        if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0)
+    while ((ent = readdir(dirp)) != NULL) { // tant que le dossier n'est pas vide
+        if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0) // on exclut lui même et ses parents
             continue;
 
         char chemin[1024];
