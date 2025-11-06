@@ -1,8 +1,13 @@
+/* etudient_bd.c
+* Auteur : Armand
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include "fichier.h"
 
 int main(){
+	// definition de la structure
 	struct etudiant{
 		char nom[30];
 		char prenom[30];
@@ -12,6 +17,8 @@ int main(){
 	int TAILLE = 5;
 	struct etudiant tab[TAILLE];
 	memset(tab, 0,TAILLE * sizeof(struct etudiant));
+
+	// user interface
 	for(int i=0; i<TAILLE; i++){
 		char temps[100];
 		
@@ -35,6 +42,8 @@ int main(){
 		fgets(temps, 10, stdin);
 		strncpy(tab[i].note[1], temps, strlen(temps)-1);
 	}	
+
+	// formatage de la donné
  	char message[5][180];
 	for(int i=0; i<TAILLE; i++){
 		message[i][0]='\0';
