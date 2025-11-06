@@ -1,3 +1,7 @@
+/* chercherfichier.c
+* Auteur : Martin
+*/
+
 #include <stdio.h>
 #include <string.h>
 
@@ -5,6 +9,7 @@ int in_line(char * line, char * phrase){
 	int j = 0;
 	int result = 0;
 	for(long unsigned int i = 0; i < strlen(line); i++){
+		// utilisation des pointeur (! prioritée)
 		if ((* (line + i)) == (* (phrase + j))){
 			if ((* (phrase + j)) == '\n'){
 				result++;
@@ -37,7 +42,7 @@ int main(int argc, char **argv){
 	fgets(phrase, 1000, stdin);
 	
 
-
+	// ouverture de fichier
 	FILE *fp = fopen(fichier, "r");
 
 	char line[1000];
@@ -45,7 +50,8 @@ int main(int argc, char **argv){
 	int result;
 
 	printf("\n\nResults : \n");
-	
+
+	// parcours toutes les lignes et check les phrase. 
 	while (fgets(line, 1000, fp) != NULL){
 		result = in_line(line, phrase);
 		if (result > 0){
