@@ -1,8 +1,12 @@
+/* calcule.c
+* Auteur : Armand
+*/
 #include <stdio.h>
 #include "operator.h"
 #include <stdlib.h>
 
 int main (int argc, char *argv[]){
+	// verrification des arguments
 	if (argc < 2) {
 		printf("Usage: readdir path\n");
 		return(EXIT_FAILURE);
@@ -10,6 +14,7 @@ int main (int argc, char *argv[]){
 	char op =argv[2][0];
 	int a = atoi(argv[1]);
 	int b = atoi(argv[3]);
+	// utilisation du switch case
 	switch(op){
                         case '+':
                                 printf("%i \n",somme(a,b));
