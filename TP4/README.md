@@ -1,5 +1,7 @@
 # Bibliothèques
-* 
+* stdio.h
+* string.h
+* stdlib.h 
 *
 
 # Références
@@ -8,7 +10,9 @@
 * 
 
 # Difficulté
-*
+*difficulté dans l'utilisation des pointeurs dans rechercher_ficier
+*longeur 
+* déclaration des fonction autour du fichier main.c
 
 # Commentaires
 * 
