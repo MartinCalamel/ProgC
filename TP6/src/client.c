@@ -58,7 +58,7 @@ int envoie_recois_message(int socketfd)
   return 0;
 }
 
-void analyse(char *pathname, char *data, int nb_couleur)
+void analyse(char *pathname, char *data, int nb_couleur) // ajout du paramètre pour le nombre de couleur
 {
   // compte de couleurs
   couleur_compteur *cc = analyse_bmp_image(pathname);
@@ -119,6 +119,7 @@ int main(int argc, char **argv)
 
   if (argc < 3)
   {
+    // protection et usages
     printf("usage: ./client chemin_bmp_image nb_couleurs\n");
     return (EXIT_FAILURE);
   }
