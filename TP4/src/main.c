@@ -1,3 +1,6 @@
+/* main.c
+* Auteur : Armand
+*/
 #include <stdio.h>
 #include "operator.h"
 #include "fichier.h"
@@ -10,12 +13,16 @@ int main (){
 	scanf("%i",&choix);
 	while(getchar() != '\n');
 	char nom_de_fichier[100];
+	
 	if ( choix == 1 ){
+		// pour écrire dans un fichier 
 		printf( "entrez le nom de fichier : \n");
 		scanf("%s",nom_de_fichier);
 		while(getchar() != '\n');
 		lire_fichier(nom_de_fichier);
+		
 	} else if ( choix == 2 ){
+		// pour lire dans un fichier
 		printf( "entrez le nom de fichier : \n");
                 scanf("%s",nom_de_fichier);
                 while(getchar() != '\n');
@@ -28,7 +35,9 @@ int main (){
         		}
     		}
                 ecrire_dans_fichier(nom_de_fichier,texte);
+		
 	} else if (choix == 3 ){
+		// pour faire des opération
 		printf("tapez l'entier a: \n");
 		int a;
 		scanf("%i",&a);
